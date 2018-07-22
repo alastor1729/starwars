@@ -11,17 +11,10 @@ import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration.Duration
 
 object StarwarDemo extends App {
-  val usage =
-    """
-       Usage: >run planetName
-
-       Examples:
-       >run Tatooine
-       >run "Polis Massa"
-    """.stripMargin
+  import PrintUtil._
 
   if (args.size != 1) {
-    println(usage)
+    printUsage()
     sys.exit(1)
   }
   val planetName = args(0)
@@ -35,10 +28,10 @@ object StarwarDemo extends App {
   val futurePlanets = (new PlanetsHttpClient).get(PlanetsHttpClient.URL)
 
   val planets = Await.result(futurePlanets, Duration.Inf)
-  val people = Await.result(futurePeople, Duration.Inf)
+  printToConsole("Planets", planets)
 
-  PrintUtil.printPlanetList
-  PrintUtil.printPeopleList
+  val people = Await.result(futurePeople, Duration.Inf)
+  printToConsole("People", people)
 
   // Merge the list of planet objects with the list of people objects into a new data structure
   val starwarServices = new StarwarServices(planets, people)

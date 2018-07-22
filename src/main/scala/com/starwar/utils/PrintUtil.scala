@@ -1,22 +1,22 @@
 package com.starwar.utils
 
-import com.starwar.StarwarDemo.{people, planets}
+import com.starwar.model.Entity
 
 object PrintUtil {
+  val usage =
+    """
+       Usage: >run planetName
 
-  def printPlanetList(): Unit = {
-    println(s"total planets: ${planets.size}")
-    println(s"planets in this response:")
-    planets.sortBy(_.name) foreach println
-    println()
+       Examples:
+       >run Tatooine
+       >run "Polis Massa"
+    """.stripMargin
+
+  def printToConsole[T <: Entity](title: String, es: List[T]=Nil): Unit = {
+    println(s"$title: ${es.size}")
+    es.sortBy(_.name) foreach println
     println()
   }
 
-  def printPeopleList(): Unit = {
-    println(s"total people: ${people.size}")
-    println(s"people in this response:")
-    people.sortBy(_.name) foreach println
-    println()
-  }
-
+  def printUsage(): Unit = println(usage)
 }

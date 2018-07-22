@@ -9,7 +9,7 @@ class StarwarServices(planets: List[Planet], people: List[Person]) {
       case (homeUrl, ps) => (toPlanetName(homeUrl), ps.map(_.name))
     }
 
-  private def toPlanetName(homeUrl: URL): String =
+  def toPlanetName(homeUrl: URL): String =
     planets.find(_.url == homeUrl).map(_.name).getOrElse("No Planet Found")
 
   def getPeople(planetName: String): List[String] =
