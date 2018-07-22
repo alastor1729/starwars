@@ -1,16 +1,30 @@
 package com.starwar
-import com.starwar.model.{JsonSupport, Person, Planet}
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import com.starwar.model._
+
+import scala.concurrent.ExecutionContext
 
 
 trait TestData extends JsonSupport {
   import spray.json._
-  import com.starwar.TestData.{peopleJson, planetsJson}
+  import TestData._
 
   val people = peopleJson.parseJson.convertTo[List[Person]]
   val planets = planetsJson.parseJson.convertTo[List[Planet]]
+
+  val peopleResponse = peopleResponseJson.parseJson.convertTo[PeopleResponse]
+  val planetsResponse = planetsResponseJson.parseJson.convertTo[PlanetsResponse]
 }
 
 object TestData {
+
+  object Implicits {
+    implicit val system: ActorSystem = ActorSystem("StarWarServerTests")
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
+    implicit val ec: ExecutionContext = system.dispatcher
+  }
+
   val peopleJson =
     """
       |[
@@ -137,4 +151,115 @@ object TestData {
       |}
       |]
     """.stripMargin
+
+  val peopleResponseJson =
+    """
+      |{
+      |    "count": 87,
+      |    "next": null,
+      |    "previous": "https://swapi.co/api/people/?page=1",
+      |    "results": [
+      |        {
+      |           "name": "Luke Skywalker",
+      |           "height": "172",
+      |           "mass": "77",
+      |           "hair_color": "blond",
+      |           "skin_color": "fair",
+      |           "eye_color": "blue",
+      |           "birth_year": "19BBY",
+      |           "gender": "male",
+      |           "homeworld": "https://swapi.co/api/planets/1/",
+      |           "films": [
+      |             "https://swapi.co/api/films/2/",
+      |             "https://swapi.co/api/films/6/",
+      |             "https://swapi.co/api/films/3/",
+      |             "https://swapi.co/api/films/1/",
+      |             "https://swapi.co/api/films/7/"
+      |           ],
+      |           "species": [
+      |             "https://swapi.co/api/species/1/"
+      |           ],
+      |           "vehicles": [
+      |             "https://swapi.co/api/vehicles/14/",
+      |             "https://swapi.co/api/vehicles/30/"
+      |           ],
+      |           "starships": [
+      |             "https://swapi.co/api/starships/12/",
+      |             "https://swapi.co/api/starships/22/"
+      |           ],
+      |           "created": "2014-12-09T13:50:51.644000Z",
+      |           "edited": "2014-12-20T21:17:56.891000Z",
+      |           "url": "https://swapi.co/api/people/1/"
+      |        },
+      |        {
+      |            "name": "Wilhuff Tarkin",
+      |            "height": "180",
+      |            "mass": "unknown",
+      |            "hair_color": "auburn, grey",
+      |            "skin_color": "fair",
+      |            "eye_color": "blue",
+      |            "birth_year": "64BBY",
+      |            "gender": "male",
+      |            "homeworld": "https://swapi.co/api/planets/21/",
+      |            "films": [
+      |                "https://swapi.co/api/films/6/",
+      |                "https://swapi.co/api/films/1/"
+      |            ],
+      |            "species": [
+      |                "https://swapi.co/api/species/1/"
+      |            ],
+      |            "vehicles": [],
+      |            "starships": [],
+      |            "created": "2014-12-10T16:26:56.138000Z",
+      |            "edited": "2014-12-20T21:17:50.330000Z",
+      |            "url": "https://swapi.co/api/people/12/"
+      |        }
+      |    ]
+      |}
+    """.stripMargin
+
+  val planetsResponseJson =
+    """
+      |{
+      |    "count": 61,
+      |    "next": null,
+      |    "previous": null,
+      |    "results": [
+      |        {
+      |            "name": "Tatooine",
+      |             "rotation_period": "23",
+      |             "orbital_period": "304",
+      |             "diameter": "10465",
+      |             "climate": "arid",
+      |             "gravity": "1 standard",
+      |             "terrain": "desert",
+      |             "surface_water": "1",
+      |             "population": "200000",
+      |             "residents": [
+      |               "https://swapi.co/api/people/1/",
+      |               "https://swapi.co/api/people/2/",
+      |               "https://swapi.co/api/people/4/",
+      |               "https://swapi.co/api/people/6/",
+      |               "https://swapi.co/api/people/7/",
+      |               "https://swapi.co/api/people/8/",
+      |               "https://swapi.co/api/people/9/",
+      |               "https://swapi.co/api/people/11/",
+      |               "https://swapi.co/api/people/43/",
+      |               "https://swapi.co/api/people/62/"
+      |             ],
+      |             "films": [
+      |               "https://swapi.co/api/films/5/",
+      |               "https://swapi.co/api/films/4/",
+      |               "https://swapi.co/api/films/6/",
+      |               "https://swapi.co/api/films/3/",
+      |               "https://swapi.co/api/films/1/"
+      |             ],
+      |             "created": "2014-12-09T13:50:49.641000Z",
+      |             "edited": "2014-12-21T20:48:04.175778Z",
+      |             "url": "https://swapi.co/api/planets/1/"
+      |        }
+      |    ]
+      |}
+    """.stripMargin
+
 }

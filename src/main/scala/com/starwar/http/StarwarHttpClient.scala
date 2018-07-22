@@ -10,9 +10,9 @@ import com.starwar.model._
 
 abstract class StarwarHttpClient[T](implicit materializer: ActorMaterializer, ec: ExecutionContext, http: HttpExt) {
 
-  def recursiveGet[T](initialUrl: URL, getFn: String => Future[Response[T]]): Future[List[T]] = {
+  def get(initialUrl: URL): Future[List[T]] = {
     def loop(url: URL, accum: List[T]): Future[List[T]] =
-      getFn(url) flatMap {
+      getPerPage(url) flatMap {
         resp =>
           val newAccum = accum ++ resp.results
           if (resp.next.isEmpty) {
@@ -24,8 +24,6 @@ abstract class StarwarHttpClient[T](implicit materializer: ActorMaterializer, ec
 
     loop(initialUrl, List.empty[T])
   }
-
-  def get(url: URL): Future[List[T]] = recursiveGet(url, getPerPage)
 
   def getPerPage(pageUrl: String): Future[Response[T]] =
     for {
