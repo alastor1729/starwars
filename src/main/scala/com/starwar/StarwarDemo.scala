@@ -5,6 +5,7 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.starwar.http.impl.{PeopleHttpClient, PlanetsHttpClient}
 import com.starwar.services.StarwarServices
+import com.starwar.utils.PrintUtil
 
 import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration.Duration
@@ -36,18 +37,11 @@ object StarwarDemo extends App {
   val planets = Await.result(futurePlanets, Duration.Inf)
   val people = Await.result(futurePeople, Duration.Inf)
 
-  println(s"total planets: ${planets.size}")
-  println(s"planets in this response:")
-  planets.sortBy(_.name) foreach println
-  println()
-  println()
-  println(s"total people: ${people.size}")
-  println(s"people in this response:")
-  people.sortBy(_.name) foreach println
-  println()
+  PrintUtil.printPlanetList
+  PrintUtil.printPeopleList
 
+  // Merge the list of planet objects with the list of people objects into a new data structure
   val starwarServices = new StarwarServices(planets, people)
-
   val ps = starwarServices.getPeople(planetName)
   println(s"People on $planetName")
   ps foreach println

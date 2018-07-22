@@ -1,7 +1,7 @@
 package com.starwar.http
 
 import akka.http.scaladsl.HttpExt
-import akka.http.scaladsl.model.{HttpEntity, HttpRequest, HttpResponse}
+import akka.http.scaladsl.model.{HttpEntity, HttpRequest}
 import akka.stream.ActorMaterializer
 
 import scala.concurrent.{ExecutionContext, Future}
