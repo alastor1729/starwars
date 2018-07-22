@@ -26,7 +26,7 @@ object StarwarDemo extends App {
   val planetName = args(0)
 
   implicit val system: ActorSystem = ActorSystem("StarWarServer")
-  implicit val materializer: ActorMaterializer = ActorMaterializer()Planet.scala
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val ec: ExecutionContext = system.dispatcher
   implicit val http = Http()
 
