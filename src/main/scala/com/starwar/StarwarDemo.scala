@@ -8,7 +8,7 @@ import com.starwar.services.StarwarServices
 import com.starwar.utils.PrintUtil
 
 import scala.concurrent.{Await, ExecutionContext}
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, MINUTES}
 
 object StarwarDemo extends App {
   import PrintUtil._
@@ -18,6 +18,7 @@ object StarwarDemo extends App {
     sys.exit(1)
   }
   val planetName = args(0)
+  val timeOut = Duration(5, MINUTES)
 
   implicit val system: ActorSystem = ActorSystem("StarWarServer")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -27,10 +28,10 @@ object StarwarDemo extends App {
   val futurePeople = (new PeopleHttpClient).get(PeopleHttpClient.URL)
   val futurePlanets = (new PlanetsHttpClient).get(PlanetsHttpClient.URL)
 
-  val planets = Await.result(futurePlanets, Duration.Inf)
+  val planets = Await.result(futurePlanets, timeOut)
   printToConsole("Planets", planets)
 
-  val people = Await.result(futurePeople, Duration.Inf)
+  val people = Await.result(futurePeople, timeOut)
   printToConsole("People", people)
 
   // Merge the list of planet objects with the list of people objects into a new data structure
