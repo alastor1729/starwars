@@ -41,7 +41,6 @@ case class Person(
        |url: $url
      """.stripMargin
 }
-
 case class Planet(name: String,
                   rotation_period: String,
                   orbital_period: String,
@@ -75,3 +74,6 @@ case class Planet(name: String,
        |url: $url
      """.stripMargin
 }
+
+case class People(people: List[Person])
+case class Planets(planets: List[Planet])

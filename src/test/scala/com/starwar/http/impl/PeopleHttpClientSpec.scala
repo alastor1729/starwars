@@ -33,7 +33,6 @@ class PeopleHttpClientSpec extends FlatSpec with ScalaTestMatchers with TestData
     val results = Await.result(client.get(PeopleHttpClient.URL), Duration.Inf)
 
     //results shouldBe peopleResponse.results.toList
-    results should contain(results.head)
     results.size shouldBe 2
     results.head.name shouldBe "Luke Skywalker"
   }

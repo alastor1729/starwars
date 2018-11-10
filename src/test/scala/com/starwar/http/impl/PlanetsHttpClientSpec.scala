@@ -32,7 +32,6 @@ class PlanetsHttpClientSpec extends FlatSpec with ScalaTestMatchers with TestDat
     val results = Await.result(client.get(PlanetsHttpClient.URL), Duration.Inf)
 
     //results shouldBe planetsResponse.results.toList
-    results should contain(results.head)
     results.size shouldBe 1
     results.head.name shouldBe "Tatooine"
   }
