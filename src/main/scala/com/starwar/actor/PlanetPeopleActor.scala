@@ -25,12 +25,15 @@ class PlanetPeopleActor(peopleClient: PeopleHttpClient, planetsClient: PlanetsHt
     case Initialization =>
       peopleClient.get(PeopleHttpClient.URL).map(People(_)) pipeTo self
       planetsClient.get(PlanetsHttpClient.URL).map(Planets(_)) pipeTo self
+
     case People(ps) =>
       people = ps
       if (initializationDone) starwarServices = new StarwarServices(planets, people)
+
     case Planets(ps) =>
       planets = ps
       if (initializationDone) starwarServices = new StarwarServices(planets, people)
+
     case Population(planetName) =>
       if (initializationDone) sender ! starwarServices.getPeople(planetName)
       else TryAgain
