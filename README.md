@@ -6,7 +6,7 @@ Star Wars api (https://swapi.co/)
 ## Objective:
 * Create a command-line application that takes a planet name from the Star Wars universe and returns a list of people that are from that planet.
 * `StarwarDemo` is just for command-line / Web Browser demo purpose.
-* Trying to use actor and Akka Http REST API to achieve non-blocking, reactive, event-driven.
+* Trying to use Akka un-Typed Actors and Akka Http REST API to achieve non-blocking, reactive, event-driven.
 
 ## How To Run (requires SBT):
 1) in Mac Terminal or Windows Command Prompt, type `sbt clean compile`
